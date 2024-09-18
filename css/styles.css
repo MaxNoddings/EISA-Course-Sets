@@ -1,0 +1,21 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.dropdown {
+    margin: 10px 0;
+    padding: 10px;
+    width: 200px;
+}
+
+label {
+    margin-right: 10px;
+}
+
+form {
+    max-width: 400px;
+    margin: auto;
+}
