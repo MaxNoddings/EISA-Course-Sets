@@ -9,9 +9,23 @@ let grid = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(' '));
 
 // Define teams and moves
 let teams = {};
-for (let i = 0; i < TOTAL_TEAMS; i++) {
-    teams[`Team_${i + 1}`] = i < 10 ? 3 : 2; // First 10 teams with 3 moves, last 3 teams with 2 moves
-}
+teams['UVM'] = 3;
+teams['CBC'] = 3;
+teams['HAR'] = 3;
+teams['DAR'] = 3;
+teams['WIL'] = 3;
+teams['MID'] = 3;
+teams['SLU'] = 3;
+teams['BAT'] = 3;
+teams['SMC'] = 3;
+teams['UNH'] = 3;
+teams['CSC'] = 2;
+teams['BC'] = 2;
+teams['PSU'] = 2;
+
+// for (let i = 0; i < TOTAL_TEAMS; i++) {
+//     teams[`Team_${i + 1}`] = i < 10 ? 3 : 2; // First 10 teams with 3 moves, last 3 teams with 2 moves
+// }
 
 // Create interface for input
 const rl = readline.createInterface({
@@ -24,7 +38,7 @@ function getPickedTeams(callback) {
     let pickedTeams = [];
     const askTeam = (i) => {
         if (i < 6) {
-            rl.question(`Enter the name of picked team ${i + 1} (e.g., Team_1, Team_2,..., Team_13): `, (team) => {
+            rl.question(`Enter the name of picked team ${i + 1} (e.g., UVM, SMC,..., DAR): `, (team) => {
                 if (!teams.hasOwnProperty(team) || pickedTeams.includes(team)) {
                     console.log('Invalid team. Please enter a unique team name.');
                     askTeam(i); // Ask again
