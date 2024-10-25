@@ -8,24 +8,11 @@ const TOTAL_TEAMS = 13;
 let grid = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(' '));
 
 // Define teams and moves
-let teams = {};
-teams['UVM'] = 3;
-teams['CBC'] = 3;
-teams['HAR'] = 3;
-teams['DAR'] = 3;
-teams['WIL'] = 3;
-teams['MID'] = 3;
-teams['SLU'] = 3;
-teams['BAT'] = 3;
-teams['SMC'] = 3;
-teams['UNH'] = 3;
-teams['CSC'] = 2;
-teams['BC'] = 2;
-teams['PSU'] = 2;
-
-// for (let i = 0; i < TOTAL_TEAMS; i++) {
-//     teams[`Team_${i + 1}`] = i < 10 ? 3 : 2; // First 10 teams with 3 moves, last 3 teams with 2 moves
-// }
+let teams = {
+    'UVM': 3, 'CBC': 3, 'HAR': 3, 'DAR': 3,
+    'WIL': 3, 'MID': 3, 'SLU': 3, 'BAT': 3,
+    'SMC': 3, 'UNH': 3, 'CSC': 2, 'BC': 2, 'PSU': 2
+};
 
 // Create interface for input
 const rl = readline.createInterface({
@@ -101,14 +88,16 @@ getPickedTeams(pickedTeams => {
         }
         return grid[row][col] === ' ';
     }
-
+    
     // Function to try filling grid using remaining moves
     function fillGrid(remainingTeams) {
         if (remainingTeams.length === 0) {
             return true; // All moves completed successfully
         }
 
-        const team = remainingTeams[0];
+        // Randomly select a team from remainingTeams
+        const randomIndex = Math.floor(Math.random() * remainingTeams.length);
+        const team = remainingTeams[randomIndex];
         let movesLeft = teams[team];
 
         // Try placing remaining moves for current team
@@ -117,7 +106,9 @@ getPickedTeams(pickedTeams => {
                 if (movesLeft > 0 && isValidMove(team, row, col)) {
                     grid[row][col] = team;
                     teams[team] -= 1; // Deduct move
-                    if (fillGrid(teams[team] > 0 ? remainingTeams : remainingTeams.slice(1))) {
+                    // Create a new array excluding the current team if its moves are exhausted
+                    const newRemainingTeams = teams[team] > 0 ? remainingTeams : remainingTeams.filter(t => t !== team);
+                    if (fillGrid(newRemainingTeams)) {
                         return true;
                     }
                     // Undo move if unsuccessful
@@ -128,6 +119,7 @@ getPickedTeams(pickedTeams => {
         }
         return false;
     }
+
 
     // Solve and print result
     console.log("Initial Grid after picks:");
