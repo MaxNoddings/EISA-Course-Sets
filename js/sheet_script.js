@@ -10,7 +10,7 @@ function onOpen() {
     
     // Read picked teams from the sheet (cells C3 to C8)
     const pickedTeams = [];
-    for (let i = 3; i <= 8; i++) {
+    for (let i = 4; i <= 9; i++) {
       const team = sheet.getRange(`C${i}`).getValue().trim();
       if (team) {
         pickedTeams.push(team);
@@ -25,7 +25,6 @@ function onOpen() {
   
     // Constants
     const GRID_SIZE = 6;
-    const TOTAL_TEAMS = 13;
   
     // Define grid
     let grid = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(' '));
@@ -36,14 +35,22 @@ function onOpen() {
       'MID': 3, 'SLU': 3, 'BAT': 3, 'SMC': 3, 'UNH': 3,
       'CSC': 2, 'BC': 2, 'PSU': 2
     };
+
+    // Perform a coin flip to determine initial picks positions
+    const coinFlip = Math.floor(Math.random() * 2);
+    const initialPicksPositions = coinFlip === 0
+      ? [
+          [[1, 2], [1, 3]], [[2, 2], [2, 4]], [[3, 2], [3, 3]],
+          [[4, 2], [4, 4]], [[5, 2], [5, 3]], [[6, 2], [6, 4]]
+        ]
+      : [
+          [[1, 2], [1, 4]], [[2, 2], [2, 3]], [[3, 2], [3, 4]],
+          [[4, 2], [4, 3]], [[5, 2], [5, 4]], [[6, 2], [6, 3]]
+        ];
   
     // Set initial picks on grid and deduct moves
     pickedTeams.forEach((team, idx) => {
       teams[team] -= 2; // Deduct initial 2 moves for picked teams
-      const initialPicksPositions = [
-        [[1, 2], [1, 3]], [[2, 2], [2, 4]], [[3, 2], [3, 3]],
-        [[4, 2], [4, 4]], [[5, 2], [5, 3]], [[6, 2], [6, 4]]
-      ];
       initialPicksPositions[idx].forEach(pos => {
         const [row, col] = [pos[0] - 1, pos[1] - 1]; // Convert to 0-indexed for grid
         grid[row][col] = team;
