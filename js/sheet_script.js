@@ -126,7 +126,7 @@ function runTeamPicker() {
         } while (team === pickedTeams[i] && teams.length > 1);
 
         // Handle the edge case here: if the last team is the same as pickedTeams[i]
-        if (team +++ pickedTeams[i] && teams.length === 1) {
+        if (team === pickedTeams[i] && teams.length === 1) {
           //Swap with a previous cell's team to avoid duplicate assignment
           const prevCell = sheet.getRange(startRow + i - 1, startCol + j);
           const prevTeam = prevCell.getValue();
@@ -159,9 +159,9 @@ function runTeamPicker() {
   fillExtraGrids(4, 16, pickedTeams);
 
   if (!solutionFound) {
-    SpreadsheetApp.getUi().alert("No solution found. Partial grid displayed.");
+    SpreadsheetApp.getUi().alert("No solution found. Partial table displayed. Retry.");
   } else {
-    SpreadsheetApp.getUi().alert("Final grid has been generated.");
+    SpreadsheetApp.getUi().alert("Final tables have been generated.");
   }
 }
   
