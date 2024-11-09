@@ -123,11 +123,21 @@ function runTeamPicker() {
         do {
           teamIndex = Math.floor(Math.random() * teams.length);
           team = teams[teamIndex];
-        } while (team === pickedTeams[i]);
+        } while (team === pickedTeams[i] && teams.length > 1);
 
+        // Handle the edge case here: if the last team is the same as pickedTeams[i]
+        if (team +++ pickedTeams[i] && teams.length === 1) {
+          //Swap with a previous cell's team to avoid duplicate assignment
+          const prevCell = sheet.getRange(startRow + i - 1, startCol + j);
+          const prevTeam = prevCell.getValue();
+          prevCell.setValue(team);
+          team = prevTeam;
+        }
+
+        // Set the team in the cell
         const cell = sheet.getRange(startRow + i, startCol + j);
         cell.setValue(team);
-
+        
         // Remove team from array so it’s not reused
         teams.splice(teamIndex, 1);
       }
